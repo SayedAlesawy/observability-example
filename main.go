@@ -2,6 +2,7 @@ package main
 
 import (
 	example "observability-example/controllers"
+	"observability-example/metrics"
 
 	"github.com/gin-gonic/gin"
 )
@@ -9,7 +10,11 @@ import (
 func main() {
 	router := gin.Default()
 
-	router.GET("/ping", example.ExampleHandler)
+	metrics.StartMetricsServer()
+	router.Use(metrics.MetricsMiddleware())
+
+	router.GET("/ping/:id/status", example.ExampleHandler)
+	router.GET("/ping/:id/info", example.ExampleHandler)
 
 	router.Run()
 }
