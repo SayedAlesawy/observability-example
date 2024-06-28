@@ -10,7 +10,7 @@ import (
 func main() {
 	router := gin.Default()
 
-	metrics.StartMetricsServer()
+	metrics.StartMetricsServer(router)
 	router.Use(metrics.MetricsMiddleware())
 
 	router.GET("/ping/:id/status", example.ExampleHandler)
