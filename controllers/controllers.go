@@ -23,12 +23,17 @@ func getRandomLatencyMs() time.Duration {
 	return time.Duration(generateRandomInt(100, 1000) * int(time.Millisecond))
 }
 
-// getRandomStatusCode generates a random status code
+// getRandomStatusCode generates a random status code that's 200 50% of the time
 func getRandomStatusCode() int {
 	codes := []int{
 		http.StatusBadRequest,
 		http.StatusOK,
 		http.StatusGatewayTimeout,
+	}
+
+	chance200 := generateRandomInt(1, 100)
+	if chance200 <= 50 {
+		return http.StatusOK
 	}
 
 	return codes[generateRandomInt(0, len(codes)-1)]
