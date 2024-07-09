@@ -262,7 +262,7 @@
         "steppedLine": false,
         "targets": [
           {
-            "expr": "sum(increase(example_requests_count{method=\"$method\",url=\"$url\"}[5m]))",
+            "expr": "sum(increase(example_requests_count{method=\"$method\",url=\"$url\"}[1m]))",
             "format": "time_series",
             "intervalFactor": 1,
             "legendFormat": "Throughput",
@@ -273,7 +273,7 @@
         "timeFrom": null,
         "timeRegions": [],
         "timeShift": null,
-        "title": "Throughout",
+        "title": "Throughput",
         "tooltip": {
           "shared": true,
           "sort": 0,
