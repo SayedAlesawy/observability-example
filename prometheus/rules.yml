@@ -1,0 +1,44 @@
+groups:
+  - name: status-request-latency
+    rules:
+    - record: "slo:sli:ratio_rate5m"
+      expr: |-
+        sum(rate(example_request_latency_ms_bucket{url="/ping/:id/status",le="500"}[5m]))
+        /
+        sum(rate(example_request_latency_ms_count{url="/ping/:id/status"}[5m]))
+      labels:
+        slo_id: status-request-latency
+        feature: status
+
+  - name: status-request-avaialbility
+    rules:
+    - record: "slo:sli:ratio_rate5m"
+      expr: |-
+        sum by(url) (rate(example_requests_count{url="/ping/:id/status",status!~"5..|4.."}[5m]))
+        /
+        sum by(url) (rate(example_request_latency_ms_count{url="/ping/:id/status"}[5m]))
+      labels:
+        slo_id: status-request-avaialbility
+        feature: status
+
+  - name: info-request-latency
+    rules:
+    - record: "slo:sli:ratio_rate5m"
+      expr: |-
+        sum(rate(example_request_latency_ms_bucket{url="/ping/:id/info",le="500"}[5m]))
+        /
+        sum(rate(example_request_latency_ms_count{url="/ping/:id/info"}[5m]))
+      labels:
+        slo_id: info-request-latency
+        feature: info
+
+  - name: info-request-availability
+    rules:
+    - record: "slo:sli:ratio_rate5m"
+      expr: |-
+        sum by(url) (rate(example_requests_count{url="/ping/:id/info",status!~"5..|4.."}[5m]))
+        /
+        sum by(url) (rate(example_request_latency_ms_count{url="/ping/:id/info"}[5m]))
+      labels:
+        slo_id: info-request-avaialbility
+        feature: info
