@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"log"
 	"math/rand"
 	"net/http"
 	"time"
@@ -8,25 +9,22 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-const (
-	successChancePercentageThreshold = 90
-	slowChancePercentageThreshold    = 95
-	fastResponseThreshold            = 300
-)
+func ExampleHandler(successChanceThreshold, fastChanceThreshold, fastResponseThreshold int) func(*gin.Context) {
+	log.Printf("Success: %d\nFast: %d\nFast Duration: %d", successChanceThreshold, fastChanceThreshold, fastResponseThreshold)
+	return func(c *gin.Context) {
+		// simulate request taking time
+		latency := getRandomLatencyMs(1, fastResponseThreshold)
+		slowChance := generateRandomInt(1, 100)
+		if slowChance > fastChanceThreshold {
+			latency = getRandomLatencyMs(fastResponseThreshold+1, 1000)
+		}
+		time.Sleep(latency)
 
-func ExampleHandler(c *gin.Context) {
-	// simulate request taking time
-	latency := getRandomLatencyMs(1, fastResponseThreshold)
-	slowChance := generateRandomInt(1, 100)
-	if slowChance >= slowChancePercentageThreshold {
-		latency = getRandomLatencyMs(fastResponseThreshold+1, 1000)
+		// simulate a random status code
+		c.JSON(getRandomStatusCode(successChanceThreshold), gin.H{
+			"response": "pong",
+		})
 	}
-	time.Sleep(latency)
-
-	// simulate a random status code
-	c.JSON(getRandomStatusCode(), gin.H{
-		"response": "pong",
-	})
 }
 
 // getRandomLatencyMs generates a random request latency between 100ms and 1000ms
@@ -35,7 +33,7 @@ func getRandomLatencyMs(min, max int) time.Duration {
 }
 
 // getRandomStatusCode generates a random status code that's 200 90% of the time
-func getRandomStatusCode() int {
+func getRandomStatusCode(successChancePercentageThreshold int) int {
 	codes := []int{
 		http.StatusBadRequest,
 		http.StatusGatewayTimeout,

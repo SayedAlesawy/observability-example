@@ -32,6 +32,11 @@ services:
   server:
     build:
       context: .
+    command:
+      - ./server
+      - -success-chance=95
+      - -fast-chance=95
+      - -fast-duration=300
     ports:
       - '8080:8080'
     depends_on:
