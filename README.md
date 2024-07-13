@@ -37,7 +37,7 @@ The following should give an idea about the project structure and what each part
 └── go.sum // project dependencies
 ```
 
-## Explaination
+## Explanation
 The follow contains a step by step explaination for how a monitoring example works.
 
 ### App instrumentation
