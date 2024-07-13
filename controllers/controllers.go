@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"log"
 	"math/rand"
 	"net/http"
 	"time"
@@ -10,7 +9,6 @@ import (
 )
 
 func ExampleHandler(successChanceThreshold, fastChanceThreshold, fastResponseThreshold int) func(*gin.Context) {
-	log.Printf("Success: %d\nFast: %d\nFast Duration: %d", successChanceThreshold, fastChanceThreshold, fastResponseThreshold)
 	return func(c *gin.Context) {
 		// simulate request taking time
 		latency := getRandomLatencyMs(1, fastResponseThreshold)
@@ -27,12 +25,12 @@ func ExampleHandler(successChanceThreshold, fastChanceThreshold, fastResponseThr
 	}
 }
 
-// getRandomLatencyMs generates a random request latency between 100ms and 1000ms
+// getRandomLatencyMs generates a random request latency between min and max in millisecond
 func getRandomLatencyMs(min, max int) time.Duration {
 	return time.Duration(generateRandomInt(min, max) * int(time.Millisecond))
 }
 
-// getRandomStatusCode generates a random status code that's 200 90% of the time
+// getRandomStatusCode generates a random status code that's 200 successChancePercentageThreshold% of the time
 func getRandomStatusCode(successChancePercentageThreshold int) int {
 	codes := []int{
 		http.StatusBadRequest,
