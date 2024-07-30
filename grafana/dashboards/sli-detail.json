@@ -23,14 +23,17 @@
   },
   "editable": true,
   "fiscalYearStartMonth": 0,
-  "graphTooltip": 0,
+  "graphTooltip": 2,
   "id": 2,
-  "iteration": 1720609910867,
+  "iteration": 1720947434025,
   "links": [],
   "liveNow": false,
   "panels": [
     {
-      "datasource": {},
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
       "fieldConfig": {
         "defaults": {
           "mappings": [],
@@ -81,7 +84,7 @@
             "type": "prometheus",
             "uid": "PBFA97CFB590B2093"
           },
-          "expr": "slo:sli:ratio_rate5m{slo_id=~\"$slo_id\"}",
+          "expr": "slo:sli:ratio_rate$window{slo_id=~\"$slo_id\"}",
           "interval": "",
           "legendFormat": "",
           "refId": "A"
@@ -205,7 +208,10 @@
       "type": "stat"
     },
     {
-      "datasource": {},
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
       "fieldConfig": {
         "defaults": {
           "mappings": [],
@@ -260,7 +266,7 @@
             "type": "prometheus",
             "uid": "PBFA97CFB590B2093"
           },
-          "expr": "1 - (1 - slo:sli:ratio_rate5m{slo_id=~\"$slo_id\"}) / (1 - $slo)",
+          "expr": "1 - (1 - slo:sli:ratio_rate$window{slo_id=~\"$slo_id\"}) / (1 - $slo)",
           "interval": "",
           "legendFormat": "",
           "refId": "A"
@@ -270,7 +276,10 @@
       "type": "stat"
     },
     {
-      "datasource": {},
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -363,7 +372,7 @@
             "type": "prometheus",
             "uid": "PBFA97CFB590B2093"
           },
-          "expr": "slo:sli:ratio_rate5m{slo_id=~\"$slo_id\"}",
+          "expr": "slo:sli:ratio_rate$window{slo_id=~\"$slo_id\"}",
           "interval": "",
           "legendFormat": "SLI",
           "refId": "A"
@@ -383,7 +392,10 @@
       "type": "timeseries"
     },
     {
-      "datasource": {},
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -476,7 +488,7 @@
             "type": "prometheus",
             "uid": "PBFA97CFB590B2093"
           },
-          "expr": "1 - (1 - slo:sli:ratio_rate5m{slo_id=~\"$slo_id\"}) / (1 - $slo)",
+          "expr": "1 - (1 - slo:sli:ratio_rate$window{slo_id=~\"$slo_id\"}) / (1 - $slo)",
           "interval": "",
           "legendFormat": "Error Budget",
           "refId": "A"
@@ -495,8 +507,8 @@
       {
         "current": {
           "selected": true,
-          "text": "info-request-avaialbility",
-          "value": "info-request-avaialbility"
+          "text": "info-request-availability",
+          "value": "info-request-availability"
         },
         "datasource": {
           "type": "prometheus",
@@ -524,7 +536,7 @@
       },
       {
         "current": {
-          "selected": false,
+          "selected": true,
           "text": "0.95",
           "value": "0.95"
         },
@@ -546,11 +558,44 @@
           },
           {
             "selected": false,
+            "text": "0.98",
+            "value": "0.98"
+          },
+          {
+            "selected": false,
             "text": "0.99",
             "value": "0.99"
           }
         ],
-        "query": "0.9,0.95,0.99",
+        "query": "0.9,0.95,0.98,0.99",
+        "queryValue": "",
+        "skipUrlSync": false,
+        "type": "custom"
+      },
+      {
+        "current": {
+          "selected": true,
+          "text": "30m",
+          "value": "30m"
+        },
+        "hide": 0,
+        "includeAll": false,
+        "label": "Window",
+        "multi": false,
+        "name": "window",
+        "options": [
+          {
+            "selected": false,
+            "text": "5m",
+            "value": "5m"
+          },
+          {
+            "selected": true,
+            "text": "30m",
+            "value": "30m"
+          }
+        ],
+        "query": "5m,30m",
         "queryValue": "",
         "skipUrlSync": false,
         "type": "custom"
@@ -558,7 +603,7 @@
     ]
   },
   "time": {
-    "from": "now-3h",
+    "from": "now-30m",
     "to": "now"
   },
   "timepicker": {
@@ -577,6 +622,6 @@
   "timezone": "",
   "title": "SLI Detail",
   "uid": "_CRt9oEIk",
-  "version": 1,
+  "version": 3,
   "weekStart": ""
 }

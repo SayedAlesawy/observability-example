@@ -26,7 +26,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
   "id": 3,
-  "iteration": 1720609896482,
+  "iteration": 1720957669523,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -79,7 +79,7 @@
             "type": "prometheus",
             "uid": "PBFA97CFB590B2093"
           },
-          "expr": "count(slo:sli:ratio_rate5m{feature=~\"$feature\"})",
+          "expr": "count(slo:sli:ratio_rate$window{feature=~\"$feature\"})",
           "interval": "",
           "legendFormat": "",
           "refId": "A"
@@ -89,7 +89,10 @@
       "type": "stat"
     },
     {
-      "datasource": {},
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
       "fieldConfig": {
         "defaults": {
           "mappings": [],
@@ -134,7 +137,7 @@
             "type": "prometheus",
             "uid": "PBFA97CFB590B2093"
           },
-          "expr": "count(count by(feature) (slo:sli:ratio_rate5m{feature=~\"$feature\"}))",
+          "expr": "count(count by(feature) (slo:sli:ratio_rate$window{feature=~\"$feature\"}))",
           "interval": "",
           "legendFormat": "",
           "refId": "A"
@@ -144,7 +147,10 @@
       "type": "stat"
     },
     {
-      "datasource": {},
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
       "fieldConfig": {
         "defaults": {
           "mappings": [],
@@ -193,7 +199,7 @@
             "type": "prometheus",
             "uid": "PBFA97CFB590B2093"
           },
-          "expr": "count(1 - (1 - slo:sli:ratio_rate5m{feature=~\"$feature\"}) / (1 - $slo) < 0) or vector(0)",
+          "expr": "count(1 - (1 - slo:sli:ratio_rate$window{feature=~\"$feature\"}) / (1 - $slo) < 0) or vector(0)",
           "instant": true,
           "interval": "",
           "legendFormat": "",
@@ -204,7 +210,10 @@
       "type": "stat"
     },
     {
-      "datasource": {},
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
       "fieldConfig": {
         "defaults": {
           "custom": {
@@ -369,7 +378,7 @@
             "type": "prometheus",
             "uid": "PBFA97CFB590B2093"
           },
-          "expr": "1 - (1 - slo:sli:ratio_rate5m{feature=~\"$feature\"}) / (1 - $slo)",
+          "expr": "1 - (1 - slo:sli:ratio_rate$window{feature=~\"$feature\"}) / (1 - $slo)",
           "format": "table",
           "instant": true,
           "interval": "",
@@ -377,7 +386,7 @@
           "refId": "A"
         }
       ],
-      "title": "Remaining Error Budgets (7 day window)",
+      "title": "Remaining Error Budgets ($window window)",
       "type": "table"
     }
   ],
@@ -389,7 +398,7 @@
     "list": [
       {
         "current": {
-          "selected": true,
+          "selected": false,
           "text": [
             "All"
           ],
@@ -422,7 +431,7 @@
       },
       {
         "current": {
-          "selected": false,
+          "selected": true,
           "text": "0.9",
           "value": "0.9"
         },
@@ -444,11 +453,44 @@
           },
           {
             "selected": false,
+            "text": "0.98",
+            "value": "0.98"
+          },
+          {
+            "selected": false,
             "text": "0.99",
             "value": "0.99"
           }
         ],
-        "query": "0.9,0.95,0.99",
+        "query": "0.9,0.95,0.98,0.99",
+        "queryValue": "",
+        "skipUrlSync": false,
+        "type": "custom"
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": "30m",
+          "value": "30m"
+        },
+        "hide": 0,
+        "includeAll": false,
+        "label": "Window",
+        "multi": false,
+        "name": "window",
+        "options": [
+          {
+            "selected": false,
+            "text": "5m",
+            "value": "5m"
+          },
+          {
+            "selected": true,
+            "text": "30m",
+            "value": "30m"
+          }
+        ],
+        "query": "5m,30m",
         "queryValue": "",
         "skipUrlSync": false,
         "type": "custom"
@@ -456,7 +498,7 @@
     ]
   },
   "time": {
-    "from": "now-3h",
+    "from": "now-30m",
     "to": "now"
   },
   "timepicker": {
@@ -475,6 +517,6 @@
   "timezone": "",
   "title": "SLI Overview",
   "uid": "3fXM8uLIk",
-  "version": 2,
+  "version": 6,
   "weekStart": ""
 }
